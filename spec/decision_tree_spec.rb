@@ -5,6 +5,7 @@ describe DecisionTree do
 
     [
         ['ford', nil, nil, 15000],
+        ['ford', 'mondeo', nil, 30000],
         ['ford', 'focus', nil, 20000],
         ['ford', 'focus', 'automatic', 25000],
         ['posh', 'focus', 'automatic', 35000]
@@ -32,6 +33,10 @@ describe DecisionTree do
     @tree.best_for(
         OpenStruct.new(make: 'ford', model: 'focus', transmission: 'whatever')
     ).price.should == 20000
+
+    @tree.best_for(
+        OpenStruct.new(make: 'ford', model: 'mondeo', transmission: 'whatever')
+    ).price.should == 30000
   end
 
   it "should match the most general make, model and transmission" do
