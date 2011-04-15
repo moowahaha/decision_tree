@@ -32,8 +32,6 @@ class DecisionTree
         end
       end
     end
-
-    p @trie
   end
 
   def best_for matcher
