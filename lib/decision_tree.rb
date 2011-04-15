@@ -5,7 +5,10 @@ class DecisionTree
 
     factors_by_preference = {}
 
-    candidates.each do |candidate|
+    @candidate_reference = {}
+
+    candidates.each_with_index do |candidate, i|
+      @candidate_reference[i.to_s.to_sym] = candidate
       factors.each do |factor|
         value = candidate.send(factor) || next
         factors_by_preference[factor] ||= {}
@@ -24,11 +27,13 @@ class DecisionTree
       values.keys.each do |value|
         @trie[factor][value] = []
 
-        candidates.each do |candidate|
-          @trie[factor][value] << candidate if candidate.send(factor) == value
+        @candidate_reference.each do |index, candidate|
+          @trie[factor][value] << index if candidate.send(factor) == value
         end
       end
     end
+
+    p @trie
   end
 
   def best_for matcher
@@ -40,7 +45,9 @@ class DecisionTree
       short_list = short_list.empty? ? matches : matches & short_list
     end
 
-    short_list.first
+    short_list.map do |index|
+      @candidate_reference[index]
+    end
   end
 
   private
